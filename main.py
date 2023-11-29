@@ -18,7 +18,7 @@ class Vin:
         cursor = connection.cursor()
 
         # Vérifier si le modèle de bouteille existe déjà dans la base
-        cursor.execute("SELECT id_bouteille FROM Bouteille WHERE name=? AND domaine=? AND type=? AND annee=?",
+        cursor.execute("SELECT id_vin FROM Vin WHERE name=? AND domaine=? AND type=? AND annee=?",
                        (self.name, self.domaine, self.type, self.annee))
         existing_bouteille = cursor.fetchone()
 
@@ -38,9 +38,9 @@ class Vin:
             print("Modèle de bouteille ajouté avec succès.")
 
 class Bouteille:
-    def __init__(self ,id_etagere, column_name, note_perso, qt_totale):
+    def __init__(self ,id_etagere, name, note_perso, qt_totale):
         self.id_etagere = id_etagere
-        self.column_name = column_name
+        self.name = name
         self.note_perso = note_perso
         self.qt_totale = qt_totale
 
@@ -70,7 +70,7 @@ class Bouteille:
             nouveau_vin_modele = Vin(name, domaine, type, annee, region, commentaire, prix, note_commu, note_perso)
             
             # Ajouter le modèle de bouteille dans la table Bouteille
-            nouveau_vin_modele.ajouter_modele_bouteille()
+            nouveau_vin_modele.ajouter_vin()
 
             # Récupère l'id du modele
             cursor.execute("SELECT id_vin FROM Vin WHERE name=? AND domaine=? AND type=? AND annee=? AND region=? AND commentaire=? AND prix=? AND note_commu=? AND note_perso=?",
@@ -79,7 +79,7 @@ class Bouteille:
             id_modele_vin = id_modele_vin[0]
 
             # Vérifier si la bouteille existe déjà dans MesBouteilles
-            cursor.execute("SELECT id_bouteille, qt_totale FROM Bouteille"
+            cursor.execute("SELECT id_bouteille, qt_totale FROM Bouteille "
                            "WHERE id_vin=? AND id_etagere=?",
                            (id_modele_vin, self.id_etagere))
             existing_bouteille = cursor.fetchone()
@@ -94,9 +94,9 @@ class Bouteille:
 
             else:
                 # Sinon, ajouter la bouteille dans MesBouteilles
-                cursor.execute("INSERT INTO MesBouteilles (id_bouteille, id_etagere, column_name, note_perso, qt_totale)"
+                cursor.execute("INSERT INTO Bouteille (id_vin, id_etagere, name, note_perso, qt_totale)"
                                " VALUES (?, ?, ?, ?, ?)",
-                               (id_modele_vin, self.id_etagere, self.column_name, self.note_perso, 1))
+                               (id_modele_vin, self.id_etagere, self.name, self.note_perso, 1))
                 connection.commit()
                 
                 print("la bouteille a vraiment été ajouté")
@@ -112,12 +112,12 @@ class Bouteille:
     
     def supprimer_bouteille(self, id_MaBouteille):
          # Établir une connexion à la base de données
-            connection = sqlite3.connect('votre_base_de_donnees.db')
+            connection = sqlite3.connect('bouteille.db')
             cursor = connection.cursor()
 
             # Vérifier si la bouteille existe dans MesBouteilles et récupère le nombre d'exemplaire
-            cursor.execute("SELECT id_mesbouteilles, qt_totale FROM MesBouteilles "
-                           "WHERE id_mesbouteilles=? AND id_etagere=?",
+            cursor.execute("SELECT id_bouteille, qt_totale FROM Bouteille "
+                           "WHERE id_bouteille=? AND id_etagere=?",
                            (id_MaBouteille, self.id_etagere))
             existing_bouteille = cursor.fetchone()
 
@@ -128,13 +128,17 @@ class Bouteille:
                     cursor.execute("UPDATE Bouteille SET qt_totale=? WHERE id_bouteille=?",
                                    (new_quantity, existing_bouteille[0]))
                     print("Bouteille supprimée avec succès. Nouvelle quantité:", new_quantity)
+                    connection.commit()
+
                 else:
                     # Si la quantité est égale à 1, supprimer la bouteille de MesBouteilles
+                    print(existing_bouteille[0])
                     cursor.execute("DELETE FROM Bouteille WHERE id_bouteille=?", (existing_bouteille[0],))
                     print("Bouteille supprimée avec succès.")
+                    connection.commit()
 
             else:
-                print("Bouteille non trouvée dans MesBouteilles.")
+                print("Bouteille non trouvée.")
         # Ajouter la logique pour supprimer une bouteille de la table MesBouteilles
         # Si la quantité est supérieure à 1, réduire la quantité de 1
        
@@ -154,12 +158,13 @@ Nouveau_vin = Vin(
 )
 
 # Appel de la méthode pour ajouter le modèle de bouteille dans la base de données
-Nouveau_vin.ajouter_modele_bouteille()
+#Nouveau_vin.ajouter_vin()
 
 # bouteille1.ajouter_modele_bouteille()
 
 mes_bouteilles1 = Bouteille(1, "david", 10, 1)
-mes_bouteilles1.ajouter_bouteille()
-# mes_bouteilles1.supprimer_bouteille()
+#mes_bouteilles1.ajouter_bouteille()
+#mes_bouteilles1.ajouter_bouteille()
+mes_bouteilles1.supprimer_bouteille(4)
 
 
