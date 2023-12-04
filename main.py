@@ -40,7 +40,23 @@ class User:
         cursor = connection.cursor()
 
         user_id = self.get_user_id()
-        
+
+        # Supprimer toutes les bouteilles associées aux étagères de l'utilisateur
+        query_delete_bottles = '''
+            DELETE FROM Bouteille
+            WHERE id_etagere IN (
+                SELECT id_etagere FROM Etagere WHERE id_user = ?
+            );
+        '''
+        self.conn.execute(query_delete_bottles, (user_id,))
+
+        # Supprimer toutes les étagères de l'utilisateur
+        query_delete_shelves = '''
+            DELETE FROM Etagere WHERE id_user = ?;
+        '''
+        self.conn.execute(query_delete_shelves, (user_id,))
+
+        #supprime l'utilisateur 
         query = '''
             DELETE FROM User WHERE id_user = ?;
         '''
