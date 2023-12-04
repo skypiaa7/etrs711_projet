@@ -1,4 +1,69 @@
-import sqlite3  # Vous pouvez utiliser la bibliothèque appropriée pour votre base de données
+import sqlite3 
+
+class User:
+    def __init__(self, name, password):
+        self.name = name
+        self.password = password
+    
+    def get_user_id(self):
+        connection = sqlite3.connect('bouteille.db')
+        cursor = connection.cursor()
+
+        query = '''
+            SELECT id_user FROM User WHERE name = ? AND password = ?;
+        '''
+        result = cursor.execute(query, (self.name, self.password)).fetchone()
+        if result:
+            user_id = result[0]
+            print(f"ID de l'utilisateur ({self.name}): {user_id}")
+            return user_id
+        else:
+            print("Utilisateur non trouvé. Vérifiez le nom d'utilisateur et le mot de passe.")
+            return None
+        connection.close()
+
+
+    def ajouter_user(self):
+        connection = sqlite3.connect('bouteille.db')
+        cursor = connection.cursor()
+
+        query = '''
+            INSERT INTO User (name, password) VALUES (?, ?);
+        '''
+        cursor.execute(query, (self.name, self.password))
+        connection.commit()
+        print(f"Utilisateur {self.name} ajouté avec succès.")
+        connection.close()
+
+    def supprimer_user(self):
+        connection = sqlite3.connect('bouteille.db')
+        cursor = connection.cursor()
+
+        user_id = self.get_user_id()
+        
+        query = '''
+            DELETE FROM User WHERE id_user = ?;
+        '''
+        cursor.execute(query, (user_id,))
+        connection.commit()
+        print(f"Utilisateur avec l'ID {user_id} supprimé avec succès.")
+        connection.close()
+
+    def authentification_user(self):
+        connection = sqlite3.connect('bouteille.db')
+        cursor = connection.cursor()
+
+        query = '''
+            SELECT * FROM User WHERE name = ? AND password = ?;
+        '''
+        result = cursor.execute(query, (self.name, self.password)).fetchone()
+        if result:
+            print("Authentification réussie.")
+            return True
+        else:
+            print("Échec de l'authentification. Nom d'utilisateur ou mot de passe incorrect.")
+            return False
+        connection.close()
 
 class Vin:
     def __init__(self, name, domaine, type, annee, region, commentaire, prix, note_commu, note_perso):
@@ -151,8 +216,8 @@ class Etagere:
     def __init__(self, nom_etagere):
         self.nom_etagere = nom_etagere
 
-    def ajouter_etagere(self, id_cave, nb_bouteille=0, nb_bouteille_dispo=15):
-
+    def ajouter_etagere(self, id_user, id_cave, nb_bouteille=0, nb_bouteille_dispo=15):
+        
         #connection avec la base de donnée
         connection = sqlite3.connect('bouteille.db')
         cursor = connection.cursor()
@@ -166,9 +231,9 @@ class Etagere:
             connection.close()
 
         else:
-            cursor.execute("INSERT INTO Etagere (id_cave, nb_bouteille, nb_bouteille_dispo, nom_etagere) "
-                   "VALUES (?, ?, ?, ?)",
-                   (id_cave, nb_bouteille, nb_bouteille_dispo, self.nom_etagere))
+            cursor.execute("INSERT INTO Etagere (id_cave, nb_bouteille, nb_bouteille_dispo, nom_etagere, id_user) "
+                   "VALUES (?, ?, ?, ?, ?)",
+                   (id_cave, nb_bouteille, nb_bouteille_dispo, self.nom_etagere, id_user))
             connection.commit()
             connection.close()
 
@@ -229,7 +294,7 @@ class Etagere:
             return None
         
         conn.close()
-
+    
 # Exemple d'utilisation
 # Création d'une instance de la classe Bouteille
 Nouveau_vin = Vin(
@@ -249,15 +314,21 @@ Nouveau_vin = Vin(
 
 # bouteille1.ajouter_modele_bouteille()
 
-mes_bouteilles1 = Bouteille("etagere_1", "david", 10, 1)
-mes_bouteilles1.ajouter_bouteille()
-mes_bouteilles1.ajouter_bouteille()
+# mes_bouteilles1 = Bouteille("etagere_1", "david", 10, 1)
+# mes_bouteilles1.ajouter_bouteille()
+# mes_bouteilles1.ajouter_bouteille()
 #mes_bouteilles1.supprimer_bouteille(4)
 
 #test etagere
 nv_etagere = Etagere("etagere_1")
-nv_etagere.ajouter_etagere(1, 0, 15)
-nv_etagere.liste_bouteilles()
+nv_etagere.ajouter_etagere(id_user=5, id_cave=1, nb_bouteille=0, nb_bouteille_dispo=15)
+# nv_etagere.liste_bouteilles()
+
+#test user
+user1 = User("john", "motdepasse123")
+user1.ajouter_user()
+# user1.authentification_user()
+# user1.supprimer_user()
 
 
 
