@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionnaire de Cave à Vin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #993366;
+        }
+
+        #infos-cave {
+            margin-bottom: 20px;
+        }
+
+        #ajouter-vin-form {
+            max-width: 400px;
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #993366;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Gestionnaire de Cave à Vin</h1>
+
+    <div id="infos-cave">
+        <h2>Informations sur la Cave</h2>
+        <!-- Ajoutez ici des informations spécifiques sur la cave à vin, par exemple, le nombre total de bouteilles, etc. -->
+        <p>Nombre total de bouteilles: 50</p>
+        <p>Nombre d'étagères: 3</p>
+    </div>
+
+    <div id="ajouter-vin-form">
+        <h2>Ajouter un Nouveau Vin</h2>
+        <form method="POST" action="/ajouter_vin">
+            <label for="name">Nom du vin:</label>
+            <input type="text" name="name" required>
+            <label for="domaine">Domaine:</label>
+            <input type="text" name="domaine" required>
+            <label for="type">Type:</label>
+            <input type="text" name="type" required>
+            <label for="annee">Année:</label>
+            <input type="text" name="annee" required>
+            <label for="region">Région:</label>
+            <input type="text" name="region" required>
+            <label for="commentaire">Commentaire:</label>
+            <textarea name="commentaire" required></textarea>
+            <label for="prix">Prix:</label>
+            <input type="text" name="prix" required>
+            <label for="note_commu">Note communauté:</label>
+            <input type="text" name="note_commu" required>
+            <label for="note_perso">Note personnelle:</label>
+            <input type="text" name="note_perso" required>
+            <button type="submit">Ajouter Vin</button>
+        </form>
+    </div>
+
+</body>
+</html>
