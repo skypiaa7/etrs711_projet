@@ -63,11 +63,56 @@ def vin():
 
         # Redirigez vers la page de confirmation
         return render_template('ajouter_vin.html')
+    else:
+        return render_template('vin.html')
 
-@app.route('/bouteille')
+@app.route('/bouteille', methods=['GET', 'POST'])
 @login_required
 def bouteille():
-    return render_template('bouteille.html')
+    # Récupérez l'utilisateur connecté
+    user = current_user
+
+    # Récupérez les étagères de l'utilisateur
+    etageres = user.list_etagere()
+
+    # Passez les étagères au template
+    return render_template('bouteille.html', Etagere=etageres)
+
+@app.route('/etagere/<string:nom_etagere>', methods=['GET'])
+def etagere_details(nom_etagere):
+    # Créez une instance de la classe Etagere
+    etagere = Etagere(nom_etagere)
+
+    # Récupérez les bouteilles de l'étagère
+    bouteilles = etagere.liste_bouteilles()
+
+    # Passez les bouteilles au template
+    return render_template('list_bouteilles.html', bouteilles=bouteilles)
+
+@app.route('/list_vin')
+def list_vin():
+    # Appeler votre fonction qui renvoie la liste des vins
+    liste_des_vins = Vin.list_vin()
+
+    # Renvoyer la liste des vins à un template HTML pour l'affichage
+    return render_template('list_vin.html', vins=liste_des_vins)
+
+@app.route('/ajouter_etagere', methods=['GET', 'POST'])
+@login_required
+def ajouter_etagere_route():
+    if request.method == 'POST':
+        nom_etagere = request.form.get('nom_etagere')
+        id_user = current_user.id
+        id_cave = 1
+        nb_bouteille = 0
+        nb_bouteille_dispo = request.form.get('nb_bouteille_dispo')
+
+        etagere = Etagere(nom_etagere)
+        etagere.ajouter_etagere(id_user, id_cave, nb_bouteille, nb_bouteille_dispo)
+
+        return "Etagere ajoutée"
+    else:
+        return render_template('ajouter_etagere.html')
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -83,6 +128,11 @@ def login():
             return redirect(url_for('login'))
     else:
         return render_template('login.html')
+    
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':

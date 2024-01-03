@@ -41,8 +41,8 @@ class Etagere:
 
             # Requête SQL avec jointure entre les tables Bouteille et Vin
             query = f"""
-                SELECT Bouteille.*, Vin.*
-                FROM Bouteille
+                SELECT Bouteille.*, Vin.* 
+                FROM Bouteille 
                 JOIN Vin ON Bouteille.id_vin = Vin.id_vin
                 WHERE Bouteille.id_etagere = {id_etagere};
             """
@@ -53,14 +53,15 @@ class Etagere:
             # Récupération des résultats
             results = cursor.fetchall()
 
-            print(results)
+            # Fermeture de la connexion à la base de données
+            conn.close()
+
             # Affichage des résultats
-            print("voici la liste de vois bouteille:")
             for row in results:
                 print(row)
-
-            #Fermeture de la connexion à la base de données
-            conn.close()
+        
+        return results
+    
 
     def get_id_etagere(self, nom_etagere):
 

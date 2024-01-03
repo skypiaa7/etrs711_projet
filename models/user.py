@@ -4,7 +4,7 @@ class User:
     def __init__(self, name, password):
         self.name = name
         self.password = password
-    
+
     def is_active(self):
         return True
     
@@ -114,3 +114,25 @@ class User:
     def is_authenticated(self):
         return self.id is not None
 
+    def list_etagere(self):
+        connection = sqlite3.connect('bouteille.db')
+        cursor = connection.cursor()
+
+        user_id = self.get_user_id()
+
+        query = '''
+            SELECT * FROM Etagere WHERE id_user = ?;
+        '''
+        result = cursor.execute(query, (user_id,)).fetchall()
+        if result:
+            print("Liste des étagères:")
+            for row in result:
+                print(row)
+        else:
+            print("Aucune étagère trouvée.")
+        connection.close()
+
+        return result
+
+user1 = User("john", "motdepasse123")
+user1.list_etagere()

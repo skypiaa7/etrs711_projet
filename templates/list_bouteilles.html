@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails de l'étagère</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Liste des bouteilles</h1>
+    {% for bouteille in bouteilles %}
+        <div>
+            <p>{{ bouteille[3] }}</p>  <!-- Remplacez 0 par l'index du nom de la bouteille dans le tuple -->
+        </div>
+    {% endfor %}
+</body>
+</html>

@@ -12,19 +12,15 @@
         <a href="{{ url_for('cave') }}">Cave</a>
         <a href="{{ url_for('bouteille') }}">Bouteille</a>
         <a href="{{ url_for('vin') }}">Modèle de Vin</a>
-        <a href="{{ url_for('authentification') }}">S'authentifier</a>
+        <a href="{{ url_for('login') }}">S'authentifier</a>
+        <a href="{{ url_for('logout') }}">logout</a>
     </div>
 </nav>
 <body>
 
     <h1>Gestionnaire de Cave à Vin</h1>
 
-    <div id="infos-cave">
-        <h2>Informations sur la Cave</h2>
-        <!-- Ajoutez ici des informations spécifiques sur la cave à vin, par exemple, le nombre total de bouteilles, etc. -->
-        <p>Nombre total de bouteilles: 50</p>
-        <p>Nombre d'étagères: 3</p>
-    </div>
+    <a href="{{ url_for('list_vin') }}">Liste des Vins</a>
 
     <div id="ajouter-vin-form">
         <h2>Ajouter un Nouveau Vin</h2>

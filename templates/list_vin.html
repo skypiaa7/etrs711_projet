@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Vins</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<nav>
+    <div id="navigation">
+        <a href="">Accueil</a>
+        <a href="{{ url_for('cave') }}">Cave</a>
+        <a href="{{ url_for('bouteille') }}">Bouteille</a>
+        <a href="{{ url_for('vin') }}">Modèle de Vin</a>
+        <a href="{{ url_for('login') }}">S'authentifier</a>
+        <a href="{{ url_for('logout') }}">logout</a>
+    </div>
+</nav>
+<body>
+    <h1>Liste des Vins</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Domaine</th>
+                <th>Type</th>
+                <th>Année</th>
+                <th>Région</th>
+                <th>Commentaire</th>
+                <th>Prix</th>
+                <th>Note communauté</th>
+                <th>Note personnelle</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vin in vins %}
+                <tr>
+                    <td>{{ vin[0] }}</td>
+                    <td>{{ vin[1] }}</td>
+                    <td>{{ vin[2] }}</td>
+                    <td>{{ vin[3] }}</td>
+                    <td>{{ vin[4] }}</td>
+                    <td>{{ vin[5] }}</td>
+                    <td>{{ vin[6] }}</td>
+                    <td>{{ vin[7] }}</td>
+                    <td>{{ vin[8] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

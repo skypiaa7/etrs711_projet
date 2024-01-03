@@ -36,3 +36,21 @@ class Vin:
             connection.commit()
             connection.close()
             print("Modèle de bouteille ajouté avec succès.")
+
+    @staticmethod
+    def list_vin():
+        connection = sqlite3.connect('bouteille.db')
+        cursor = connection.cursor()
+
+        query = '''
+            SELECT * FROM Vin;
+        '''
+        result = cursor.execute(query).fetchall()
+        connection.close()
+        return result
+
+resultat = Vin.list_vin()
+
+# Afficher les résultats
+for vin in resultat:
+    print(vin)
