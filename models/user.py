@@ -5,6 +5,35 @@ class User:
         self.name = name
         self.password = password
     
+    def is_active(self):
+        return True
+    
+    def is_authenticated(self):
+        return self.name is not None and self.password is not None
+    
+    @staticmethod
+    def get_by_id(user_id):
+        connection = sqlite3.connect('bouteille.db')
+        cursor = connection.cursor()
+
+        query = '''
+            SELECT * FROM User WHERE id_user = ?;
+        '''
+        result = cursor.execute(query, (user_id,)).fetchone()
+        if result:
+            user = User(result[1], result[2])
+            user.id = result[0]
+            return user
+        else:
+            return None
+        connection.close()
+    
+    def get_id(self):
+        user_id = self.get_user_id()
+        if user_id is not None:
+            return str(user_id)
+        return None
+
     def get_user_id(self):
         connection = sqlite3.connect('bouteille.db')
         cursor = connection.cursor()
@@ -75,8 +104,13 @@ class User:
         result = cursor.execute(query, (self.name, self.password)).fetchone()
         if result:
             print("Authentification réussie.")
+            self.id = result[0]
             return True
         else:
             print("Échec de l'authentification. Nom d'utilisateur ou mot de passe incorrect.")
             return False
         connection.close()
+
+    def is_authenticated(self):
+        return self.id is not None
+

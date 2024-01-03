@@ -111,38 +111,6 @@ class Bouteille:
             else:
                 print("Bouteille non trouvée.")
     
-    def afficher_bouteille(self):
 
-        connection = sqlite3.connect('bouteille.db')
-        cursor = connection.cursor()
-
-        query = """
-            SELECT 
-                B.id_bouteille,
-                V.id_vin,
-                V.name AS vin_name,
-                V.damaine,
-                V.type,
-                V.annee,
-                V.region,
-                V.commentaire AS vin_commentaire,
-                V.prix,
-                V.note_commu,
-                V.note_perso AS vin_note_perso,
-                B.name AS bouteille_name,
-                B.note_perso AS bouteille_note_perso,
-                B.qt_totale
-            FROM Bouteille B
-            JOIN Vin V ON B.id_vin = V.id_vin
-            WHERE B.id_etagere = :id_etagere;
-        """
-
-        # Exécution de la requête avec le paramètre :id_etagere
-        cursor.execute(query, {"id_etagere": self.id_etagere})
-        
-        # Récupération de tous les résultats
-        result = cursor.fetchall()
-
-        print (result)
 
 
