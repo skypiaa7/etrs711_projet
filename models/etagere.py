@@ -53,6 +53,7 @@ class Etagere:
             # Récupération des résultats
             results = cursor.fetchall()
 
+            print(results)
             # Affichage des résultats
             print("voici la liste de vois bouteille:")
             for row in results:
@@ -82,3 +83,10 @@ class Etagere:
             return None
         
         conn.close()
+
+# Création d'une instance de la classe Etagere
+nom_etagere_test = "etagere_1"
+etagere_test = Etagere(nom_etagere_test)
+
+# Appel de la méthode liste_bouteilles
+etagere_test.liste_bouteilles()

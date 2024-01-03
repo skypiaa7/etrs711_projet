@@ -330,15 +330,14 @@ Nouveau_vin = Vin(
 
 # bouteille1.ajouter_modele_bouteille()
 
-# mes_bouteilles1 = Bouteille("etagere_1", "david", 10, 1)
-# mes_bouteilles1.ajouter_bouteille()
+#mes_bouteilles1 = Bouteille("etagere_1", "test", 10, 1)
+#mes_bouteilles1.ajouter_bouteille()
 # mes_bouteilles1.ajouter_bouteille()
 #mes_bouteilles1.supprimer_bouteille(4)
 
 #test etagere
 nv_etagere = Etagere("etagere_1")
-nv_etagere.ajouter_etagere(id_user=5, id_cave=1, nb_bouteille=0, nb_bouteille_dispo=15)
-# nv_etagere.liste_bouteilles()
+nv_etagere.liste_bouteilles()
 
 #test user
 user1 = User("john", "motdepasse123")
