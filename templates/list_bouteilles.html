@@ -6,12 +6,32 @@
     <title>Détails de l'étagère</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+<nav>
+    <div id="navigation">
+        <a href="">Accueil</a>
+        <a href="{{ url_for('cave') }}">Mes Bouteille</a>
+        <a href="{{ url_for('vin') }}">Modèle de Vin</a>
+        <a href="{{ url_for('login') }}">S'authentifier</a>
+        <a href="{{ url_for('logout') }}">logout</a>
+    </div>
+</nav>
 <body>
     <h1>Liste des bouteilles</h1>
-    {% for bouteille in bouteilles %}
-        <div>
-            <p>{{ bouteille[3] }}</p>  <!-- Remplacez 0 par l'index du nom de la bouteille dans le tuple -->
-        </div>
-    {% endfor %}
+    <table>
+        <tr>
+            <th>Nom de la bouteille</th>
+            <th>Quantite</th>
+            <th>Emplacement</th>
+            <th>Commentaire</th>
+        </tr>
+        {% for bouteille in bouteilles %}
+            <tr>
+                <td>{{ bouteille[3] }}</td>  <!-- Remplacez 3 par l'index du nom de la bouteille dans le tuple -->
+                <td>{{ bouteille[4] }}</td>  <!-- Remplacez 4 par l'index de la quantité dans le tuple -->
+                <td>{{ bouteille[5] }}</td>  <!-- Remplacez 5 par l'index de l'emplacement dans le tuple -->
+                <td>{{ bouteille[6] }}</td>  <!-- Remplacez 6 par l'index du commentaire dans le tuple -->
+            </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>

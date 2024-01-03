@@ -20,10 +20,10 @@ class Vin:
         # Vérifier si le modèle de bouteille existe déjà dans la base
         cursor.execute("SELECT id_vin FROM Vin WHERE name=? AND domaine=? AND type=? AND annee=?",
                         (self.name, self.domaine, self.type, self.annee))
-        existing_bouteille = cursor.fetchone()
+        existing_vin = cursor.fetchone()
 
-        if existing_bouteille:
-            print("Le modèle de bouteille existe déjà.")
+        if existing_vin:
+            print("Le modèle de vin existe déjà.")
             connection.close()
         else:
             # Insérer un nouveau modèle de bouteille

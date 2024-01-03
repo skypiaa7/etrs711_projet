@@ -133,6 +133,8 @@ class User:
         connection.close()
 
         return result
+    
+    
 
 user1 = User("john", "motdepasse123")
 user1.list_etagere()

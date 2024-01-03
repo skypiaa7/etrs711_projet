@@ -26,11 +26,6 @@ print("le programme commence")
 def index():
     return render_template('index.html')
 
-@app.route('/cave')
-@login_required
-def cave():
-    return render_template('cave.html')
-
 
 @app.route('/vin', methods=['GET', 'POST'])
 @login_required
@@ -66,9 +61,9 @@ def vin():
     else:
         return render_template('vin.html')
 
-@app.route('/bouteille', methods=['GET', 'POST'])
+@app.route('/cave', methods=['GET', 'POST'])
 @login_required
-def bouteille():
+def cave():
     # Récupérez l'utilisateur connecté
     user = current_user
 
@@ -76,9 +71,9 @@ def bouteille():
     etageres = user.list_etagere()
 
     # Passez les étagères au template
-    return render_template('bouteille.html', Etagere=etageres)
+    return render_template('cave.html', Etagere=etageres)
 
-@app.route('/etagere/<string:nom_etagere>', methods=['GET'])
+@app.route('/etagere/<string:nom_etagere>', methods=['GET', 'POST'])
 def etagere_details(nom_etagere):
     # Créez une instance de la classe Etagere
     etagere = Etagere(nom_etagere)
@@ -113,6 +108,22 @@ def ajouter_etagere_route():
         return "Etagere ajoutée"
     else:
         return render_template('ajouter_etagere.html')
+    
+@app.route('/supprimer_etagere', methods=['GET', 'POST'])
+@login_required
+def supprimer_etagere():
+    if request.method == 'POST':
+        nom_etagere = request.form.get('nom_etagere')
+        etagere = Etagere(nom_etagere)
+        result = etagere.supprimer_etagere()
+
+        if result:
+            return "Etagère supprimée"
+        else:
+            return "Erreur : Aucune étagère trouvée avec le nom spécifié"
+    else:
+        return render_template('supprimer_etagere.html')
+
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -133,6 +144,42 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+@app.route('/ajouter_bouteille', methods=['GET', 'POST'])
+@login_required
+def ajouter_bouteille():
+    if request.method == 'POST':
+        # Récupérez les données du formulaire
+        nom_etagere = request.form.get('nom_etagere')
+        name = request.form.get('nom_bouteille')
+        note_perso = request.form.get('note_perso')
+        qt_totale = int(request.form.get('qt_totale'))
+
+        # Créez une instance de la classe Bouteille
+        bouteille = Bouteille(nom_etagere, name, note_perso, qt_totale)
+
+        # Récupérez les autres données du formulaire
+        name = request.form.get('nom_vin')
+        domaine = request.form.get('domaine')
+        type = request.form.get('type')
+        annee = request.form.get('annee')
+        region = request.form.get('region')
+        commentaire = request.form.get('commentaire')
+        prix = request.form.get('prix')
+        note_commu = request.form.get('note_commu')
+
+        # Ajoutez la bouteille en utilisant la méthode ajouter_bouteille de la classe Bouteille
+        result = bouteille.ajouter_bouteille(name, domaine, type, annee, region, commentaire, prix, note_commu, note_perso)
+
+        # Vérifiez le résultat de l'ajout de la bouteille
+        if result:
+            # Redirigez vers la page de confirmation
+            return "Bouteille ajoutée"
+        else:
+            return "L'étagère n'a pas suffisamment de place pour les nouvelles bouteilles"
+    else:
+        # Passez les étagères et les vins au template
+        return render_template('ajouter_bouteille.html')
 
 
 if __name__ == '__main__':

@@ -84,10 +84,33 @@ class Etagere:
             return None
         
         conn.close()
+    
+    def supprimer_etagere(self):
+        # Connexion à la base de données SQLite
+        conn = sqlite3.connect('bouteille.db')
+        cursor = conn.cursor()
 
-# Création d'une instance de la classe Etagere
-nom_etagere_test = "etagere_1"
-etagere_test = Etagere(nom_etagere_test)
+        # Vérifier si l'étagère existe
+        cursor.execute("SELECT * FROM Etagere WHERE nom_etagere = ?", (self.nom_etagere,))
+        result = cursor.fetchone()
 
-# Appel de la méthode liste_bouteilles
-etagere_test.liste_bouteilles()
+        if result is None:
+            print("Etagère non trouvée.")
+            return None
+        else:
+            # Supprimer toutes les bouteilles associées à l'étagère
+            cursor.execute("DELETE FROM Bouteille WHERE id_etagere = ?", (result[0],))
+
+            # Supprimer l'étagère
+            cursor.execute("DELETE FROM Etagere WHERE nom_etagere = ?", (self.nom_etagere,))
+
+            # Commit les changements et fermer la connexion
+            conn.commit()
+            conn.close()
+
+            print("Etagère et toutes les bouteilles associées supprimées avec succès.")
+            return True
+
+# nvetagere = Etagere("test")
+# nvetagere.supprimer_etagere()
+

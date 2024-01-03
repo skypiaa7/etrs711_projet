@@ -9,8 +9,7 @@
 <nav>
     <div id="navigation">
         <a href="">Accueil</a>
-        <a href="{{ url_for('cave') }}">Cave</a>
-        <a href="{{ url_for('bouteille') }}">Mes Bouteille</a>
+        <a href="{{ url_for('cave') }}">Mes Bouteille</a>
         <a href="{{ url_for('vin') }}">Modèle de Vin</a>
         <a href="{{ url_for('login') }}">S'authentifier</a>
         <a href="{{ url_for('logout') }}">logout</a>
@@ -18,7 +17,22 @@
 </nav>
 <body>
 
-    <h1>cave !</h1>
-
+    <h1>Ma_cave</h1>
+    <a href="/ajouter_bouteille">
+        <button>ajouter une bouteille</button>
+    </a>
+    <a href="/supprimer_etagere">
+        <button>supprimer une étagère</button>
+    </a>
+    <a href="/ajouter_etagere">
+        <button>Ajouter une étagère</button>
+    </a>
+{% for etagere in Etagere %}
+    <div>
+        <a href="{{ url_for('etagere_details', nom_etagere=etagere[4]) }}">
+            <button>{{ etagere[4] }}</button>
+        </a>
+    </div>
+{% endfor %}
 </body>
 </html>

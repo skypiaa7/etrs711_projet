@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ajouter une bouteille</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<nav>
+    <div id="navigation">
+        <a href="">Accueil</a>
+        <a href="{{ url_for('cave') }}">Mes Bouteille</a>
+        <a href="{{ url_for('vin') }}">Modèle de Vin</a>
+        <a href="{{ url_for('login') }}">S'authentifier</a>
+        <a href="{{ url_for('logout') }}">logout</a>
+    </div>
+</nav>
+<body>
+    <h1>Ajouter une bouteille</h1>
+    <form action=/ajouter_bouteille method="POST">
+        <label for="nom_bouteille">Nom de la bouteille :</label>
+        <input type="text" id="nom_bouteille" name="nom_bouteille" required>
+        <label for="nom_vin">Nom du vin :</label>
+        <input type="text" id="nom_vin" name="nom_vin" required>
+        <label for="domaine">Domaine :</label>
+        <input type="text" id="domaine" name="domaine" required>
+        <label for="type">Type :</label>
+        <input type="text" id="type" name="type" required>
+        <label for="annee">Année :</label>
+        <input type="number" id="annee" name="annee" required>
+        <label for="region">Région :</label>
+        <input type="text" id="region" name="region" required>
+        <label for="nom_etagere">Nom de l'étagère :</label>
+        <input type="text" id="nom_etagere" name="nom_etagere" required>
+        <label for="qt_totale">Nombre de bouteilles :</label>
+        <input type="number" id="qt_totale" name="qt_totale" required>
+        <label for="prix">Prix :</label>
+        <input type="number" id="prix" name="prix" required>
+        <label for="note_commu">Note communautaire :</label>
+        <input type="number" id="note_commu" name="note_commu" required>
+        <label for="note_perso">Note personnelle :</label>
+        <input type="number" id="note_perso" name="note_perso" required>
+        <label for="commentaire">Commentaire :</label>
+        <textarea id="commentaire" name="commentaire" required></textarea>
+        <button type="submit">Ajouter la bouteille</button>
+    </form>
+</body>
+</html>

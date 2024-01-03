@@ -1,4 +1,6 @@
 import sqlite3
+import sys
+sys.path.append('.')
 from models.etagere import Etagere
 from models.vin import Vin
 
@@ -11,32 +13,20 @@ class Bouteille:
         instance1 = Etagere(nom_etagere)
         self.id_etagere = instance1.get_id_etagere(nom_etagere)
 
-    def ajouter_bouteille(self):
+    def ajouter_bouteille(self, name, domaine, type, annee, region, commentaire, prix, note_commu, note_perso):
 
         connection = sqlite3.connect('bouteille.db')
         cursor = connection.cursor()
 
-       # Vérifier si l'étagère a suffisamment de place
+        # Vérifier si l'étagère a suffisamment de place
         cursor.execute("SELECT nb_bouteille_dispo, nb_bouteille FROM Etagere WHERE id_etagere=?", (self.id_etagere,))
         etagere_info = cursor.fetchone()
-        print(etagere_info)
 
-        if etagere_info[0] > 0:  # S'il y a de la place dans l'étagère
-            # Demander à l'utilisateur les caractéristiques du modèle de bouteille
-            name = input("Nom du vin: ")
-            domaine = input("Domaine: ")
-            type = input("Type: ")
-            annee = int(input("Année: "))
-            region = input("Région: ")
-            commentaire = input("Commentaire: ")
-            prix = int(input("Prix: "))
-            note_commu = int(input("Note communauté: "))
-            note_perso = int(input("Note personnelle: "))
-
-            # Créer une instance de Bouteille avec les caractéristiques fournies par l'utilisateur
+        if etagere_info[0] >= self.qt_totale:  # S'il y a de la place dans l'étagère
+            # Créer une instance de Vin avec les caractéristiques fournies par l'utilisateur
             nouveau_vin_modele = Vin(name, domaine, type, annee, region, commentaire, prix, note_commu, note_perso)
             
-            # Ajouter le modèle de bouteille dans la table Bouteille
+            # Ajouter le modèle de vin dans la table Vin
             nouveau_vin_modele.ajouter_vin()
 
             # Récupère l'id du modele
@@ -45,7 +35,7 @@ class Bouteille:
             id_modele_vin = cursor.fetchone()
             id_modele_vin = id_modele_vin[0]
 
-            # Vérifier si la bouteille existe déjà dans MesBouteilles
+            # Vérifier si la bouteille existe déjà dans Bouteille
             cursor.execute("SELECT id_bouteille, qt_totale FROM Bouteille "
                            "WHERE id_vin=? AND id_etagere=?",
                            (id_modele_vin, self.id_etagere))
@@ -53,30 +43,32 @@ class Bouteille:
 
             if existing_bouteille:
                 # Si la bouteille existe déjà, augmenter la quantité de 1
-                new_quantity = existing_bouteille[1] + 1
+                new_quantity = existing_bouteille[1] + self.qt_totale
                 cursor.execute("UPDATE Bouteille SET qt_totale=? WHERE id_bouteille=?",
                                (new_quantity, existing_bouteille[0]))
-                print("Bouteille ajoutée avec succès. Nouvelle quantité:", new_quantity)
+                connection.commit()
+                cursor.execute("UPDATE Etagere SET nb_bouteille_dispo=?, nb_bouteille=? WHERE id_etagere=?",
+                               (etagere_info[0] - self.qt_totale, etagere_info[1] + self.qt_totale, self.id_etagere))
                 connection.commit()
                 connection.close()
+                return True
 
             else:
-                # Sinon, ajouter la bouteille dans MesBouteilles
+                # Sinon, ajouter la bouteille dans Bouteille
                 cursor.execute("INSERT INTO Bouteille (id_vin, id_etagere, name, note_perso, qt_totale)"
                                " VALUES (?, ?, ?, ?, ?)",
-                               (id_modele_vin, self.id_etagere, self.name, self.note_perso, 1))
+                               (id_modele_vin, self.id_etagere, self.name, self.note_perso, self.qt_totale))
                 connection.commit()
                 
-                print("la bouteille a vraiment été ajouté")
                 # Réduire nb_bouteille_dispo de 1 et augmenter nb_bouteille de 1 dans l'étagère
                 cursor.execute("UPDATE Etagere SET nb_bouteille_dispo=?, nb_bouteille=? WHERE id_etagere=?",
-                               (etagere_info[0] - 1, etagere_info[1] + 1, self.id_etagere))
+                               (etagere_info[0] - self.qt_totale, etagere_info[1] + self.qt_totale, self.id_etagere))
                 connection.commit()
                 connection.close()
 
-                print("Bouteille ajoutée avec succès.")
+                return True
         else:
-            print("L'étagère est pleine. Impossible d'ajouter la bouteille.")
+            return None
 
     
     def supprimer_bouteille(self, id_MaBouteille):
@@ -111,6 +103,18 @@ class Bouteille:
             else:
                 print("Bouteille non trouvée.")
     
+ma_bouteille = Bouteille("etagere_3", "Bouteille1", 8, 2)
+
+# Appeler la méthode ajouter_bouteille avec des paramètres de test
+# result = ma_bouteille.ajouter_bouteille("Vin1", "Domaine1", "Type1", 2000, "Region1", "Commentaire1", 20, 7, 8)
+
+# Vérifier le résultat
+# if result is None:
+#     print("L'étagère est pleine. Impossible d'ajouter la bouteille.")
+# elif result is True:
+#     print("Bouteille ajoutée avec succès.")
+# else:
+#     print("Une erreur s'est produite.")
 
 
 

@@ -4,6 +4,15 @@
     <title>Connexion</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+<nav>
+    <div id="navigation">
+        <a href="">Accueil</a>
+        <a href="{{ url_for('cave') }}">Mes Bouteille</a>
+        <a href="{{ url_for('vin') }}">Modèle de Vin</a>
+        <a href="{{ url_for('login') }}">S'authentifier</a>
+        <a href="{{ url_for('logout') }}">logout</a>
+    </div>
+</nav>
 <body>
     <h2>Connexion</h2>
     <form action="/login" method="post">
