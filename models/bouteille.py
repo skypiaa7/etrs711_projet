@@ -1,4 +1,6 @@
 import sqlite3
+from models.etagere import Etagere
+from models.vin import Vin
 
 class Bouteille:
     def __init__(self ,nom_etagere, name, note_perso, qt_totale):
