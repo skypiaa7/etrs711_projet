@@ -49,6 +49,7 @@ class Vin:
         connection.close()
         return result
 
+
 resultat = Vin.list_vin()
 
 # Afficher les résultats

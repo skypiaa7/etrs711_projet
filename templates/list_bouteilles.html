@@ -19,14 +19,9 @@
     <h1>Liste des bouteilles</h1>
     <table>
         <tr>
-            <th>id_bouteille</th>
-            <th>id_vin</th>
-            <th>id_etagere</th>
             <th>nom bouteille</th>
-            <th>note perso</th>
             <th>quantité</th>
-            <th>id_vin</th>
-            <th>nom_vin</th>
+            <th>nom du modèle</th>
             <th>domaine</th>
             <th>type</th>
             <th>année</th>
@@ -39,13 +34,8 @@
         </tr>
         {% for bouteille in bouteilles %}
             <tr>
-                <td>{{ bouteille[0] }}</td>  <!-- Remplacez 0 par l'index de l'id de la bouteille dans le tuple -->
-                <td>{{ bouteille[1] }}</td>  <!-- Remplacez 1 par l'index du nom de l'étagère dans le tuple -->
-                <td>{{ bouteille[2] }}</td>  <!-- Remplacez 2 par l'index du nom du vin dans le tuple -->
                 <td>{{ bouteille[3] }}</td>  <!-- Remplacez 3 par l'index du nom de la bouteille dans le tuple -->
-                <td>{{ bouteille[4] }}</td>  <!-- Remplacez 4 par l'index de la quantité dans le tuple -->
                 <td>{{ bouteille[5] }}</td>  <!-- Remplacez 5 par l'index de l'emplacement dans le tuple -->
-                <td>{{ bouteille[6] }}</td>  <!-- Remplacez 6 par l'index du commentaire dans le tuple -->
                 <td>{{ bouteille[7] }}</td>  <!-- Remplacez 7 par l'index du prix dans le tuple -->
                 <td>{{ bouteille[8] }}</td>  <!-- Remplacez 8 par l'index de la note communauté dans le tuple -->
                 <td>{{ bouteille[9] }}</td>  <!-- Remplacez 9 par l'index de la note personnelle dans le tuple -->

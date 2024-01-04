@@ -32,6 +32,7 @@
         <a href="{{ url_for('etagere_details', nom_etagere=etagere[4]) }}">
             <button>{{ etagere[4] }}</button>
         </a>
+        <p style="display: inline-block; margin-left: 10px;">Nombre de places disponibles : {{ etagere[3] }}</p>
     </div>
 {% endfor %}
 </body>

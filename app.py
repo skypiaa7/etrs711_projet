@@ -215,6 +215,8 @@ def ajouter_bouteille():
         # Passez les étagères et les vins au template
         return render_template('ajouter_bouteille.html')
 
+@app.route('/ajouter_bouteille_from_vin', methods=['GET', 'POST'])
+
 
 if __name__ == '__main__':
     app.run(debug=True)

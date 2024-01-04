@@ -1,10 +1,12 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0px;
+    background-color: #f0f0f0;
 }
 
 h1 {
     color: #993366;
+    margin: 20px 0;
 }
 
 #navigation {
@@ -29,10 +31,6 @@ h1 {
 
 #contenu {
     margin-top: 20px;
-}
-
-h1 {
-    color: #993366;
 }
 
 #infos-cave {
@@ -67,4 +65,23 @@ button {
     border: none;
     border-radius: 3px;
     cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #999;
+    padding: 10px;
+}
+
+th {
+    background-color: #333;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #ddd;
 }

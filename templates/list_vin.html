@@ -32,7 +32,6 @@
         <tbody>
             {% for vin in vins %}
                 <tr>
-                    <td>{{ vin[0] }}</td>
                     <td>{{ vin[1] }}</td>
                     <td>{{ vin[2] }}</td>
                     <td>{{ vin[3] }}</td>
@@ -41,6 +40,12 @@
                     <td>{{ vin[6] }}</td>
                     <td>{{ vin[7] }}</td>
                     <td>{{ vin[8] }}</td>
+                    <td>{{ vin[9] }}</td>
+                    <td>
+                        <a href="{{ url_for('ajouter_', id_vin=vin[0], name=vin[1], domaine=vin[2], type=vin[3], annee=vin[4], region=vin[5], commentaire=vin[6], prix=vin[7], note_commu=vin[8], note_perso=vin[9]) }}">
+                            <button>Ajouter à la cave</button>
+                        </a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
