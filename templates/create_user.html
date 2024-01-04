@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ajouter une bouteille</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<nav>
+    <div id="navigation">
+        <a href="">Accueil</a>
+        <a href="{{ url_for('cave') }}">Mes Bouteille</a>
+        <a href="{{ url_for('vin') }}">Modèle de Vin</a>
+        <a href="{{ url_for('login') }}">S'authentifier</a>
+        <a href="{{ url_for('logout') }}">logout</a>
+    </div>
+</nav>
+<body>
+    <h1>Ajouter un utilisateur</h1>
+    <form action=/create_user method="POST">
+        <label for="username">Nom d'utilisateur :</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Mot de passe :</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Ajouter l'utilisateur</button>
+</body>

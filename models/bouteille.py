@@ -5,13 +5,13 @@ from models.etagere import Etagere
 from models.vin import Vin
 
 class Bouteille:
-    def __init__(self ,nom_etagere, name, note_perso, qt_totale):
+    def __init__(self ,id_user, nom_etagere, name, note_perso, qt_totale):
         self.nom_etagere = nom_etagere
         self.name = name
         self.note_perso = note_perso
         self.qt_totale = qt_totale
-        instance1 = Etagere(nom_etagere)
-        self.id_etagere = instance1.get_id_etagere(nom_etagere)
+        instance1 = Etagere(nom_etagere, id_user)
+        self.id_etagere = instance1.get_id_etagere()
 
     def ajouter_bouteille(self, name, domaine, type, annee, region, commentaire, prix, note_commu, note_perso):
 
@@ -71,26 +71,35 @@ class Bouteille:
             return None
 
     
-    def supprimer_bouteille(self, id_MaBouteille):
+    def supprimer_bouteille(self, id_MaBouteille, qt_suppr, id_etagere):
          # Établir une connexion à la base de données
             connection = sqlite3.connect('bouteille.db')
             cursor = connection.cursor()
 
             # Vérifier si la bouteille existe dans MesBouteilles et récupère le nombre d'exemplaire
-            cursor.execute("SELECT id_bouteille, qt_totale FROM Bouteille "
-                           "WHERE id_bouteille=? AND id_etagere=?",
-                           (id_MaBouteille, self.id_etagere))
+            cursor.execute("""
+                SELECT B.id_bouteille, E.nb_bouteille, E.nb_bouteille_dispo, B.qt_totale 
+                FROM Bouteille B
+                JOIN Etagere E ON B.id_etagere = E.id_etagere
+                WHERE B.id_bouteille=? AND B.id_etagere=?
+            """, (id_MaBouteille, id_etagere))
             existing_bouteille = cursor.fetchone()
 
             if existing_bouteille:
-                if existing_bouteille[1] > 1:
+            
+                if existing_bouteille[1] > qt_suppr:
                     # Si la quantité est supérieure à 1, réduire la quantité de 1
-                    new_quantity = existing_bouteille[1] - 1
+                    new_quantity = existing_bouteille[1] - qt_suppr
+                    new_nb_bouteille_dispo = existing_bouteille[2] + qt_suppr
+                    new_nb_bouteille = existing_bouteille[3] - qt_suppr
                     cursor.execute("UPDATE Bouteille SET qt_totale=? WHERE id_bouteille=?",
                                    (new_quantity, existing_bouteille[0]))
                     print("Bouteille supprimée avec succès. Nouvelle quantité:", new_quantity)
                     connection.commit()
+                    cursor.execute("UPDATE Etagere SET nb_bouteille_dispo=?, nb_bouteille=? WHERE id_etagere=?", (new_nb_bouteille_dispo, new_nb_bouteille, id_etagere))
+                    connection.commit()
                     connection.close()
+                    return True
 
                 else:
                     # Si la quantité est égale à 1, supprimer la bouteille de MesBouteilles
@@ -98,17 +107,22 @@ class Bouteille:
                     cursor.execute("DELETE FROM Bouteille WHERE id_bouteille=?", (existing_bouteille[0],))
                     print("Bouteille supprimée avec succès.")
                     connection.commit()
+                    cursor.execute("UPDATE Etagere SET nb_bouteille_dispo=?, nb_bouteille=? WHERE id_etagere=?", (existing_bouteille[2] + qt_suppr, existing_bouteille[3] - qt_suppr, id_etagere))
+                    connection.commit()
                     connection.close()
+                    return True
 
             else:
                 print("Bouteille non trouvée.")
+                return None
     
-ma_bouteille = Bouteille("etagere_3", "Bouteille1", 8, 2)
+# ma_bouteille = Bouteille(5, "test", "test", 12, 10)
 
 # Appeler la méthode ajouter_bouteille avec des paramètres de test
 # result = ma_bouteille.ajouter_bouteille("Vin1", "Domaine1", "Type1", 2000, "Region1", "Commentaire1", 20, 7, 8)
+# result = ma_bouteille.supprimer_bouteille(19, 2, 15)
 
-# Vérifier le résultat
+# #Vérifier le résultat
 # if result is None:
 #     print("L'étagère est pleine. Impossible d'ajouter la bouteille.")
 # elif result is True:

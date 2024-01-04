@@ -26,6 +26,29 @@ print("le programme commence")
 def index():
     return render_template('index.html')
 
+@app.route('/delete_bouteille', methods=['GET', 'POST'])
+@login_required
+def delete_bouteille():
+    if request.method == 'POST':
+        id_bouteille = request.form.get('id_bouteille')
+        print(id_bouteille)
+        id_etagere = request.form.get('id_etagere')
+        id_user = current_user.id
+        nom_etagere = request.form.get('nom_etagere')
+        print(nom_etagere)
+        name = request.form.get('nom_bouteille')
+        note_perso = request.form.get('note_perso')
+        qt_totale = int(request.form.get('qt_totale'))
+        bouteille = Bouteille(id_user, nom_etagere, name, note_perso, qt_totale)
+        qt_suppr = int(request.form.get('qt_suppr'))
+        result = bouteille.supprimer_bouteille(id_bouteille, qt_suppr, id_etagere)
+        if result:
+            return "Bouteille supprimée"
+        else:
+            return "Erreur : Aucune bouteille trouvée avec l'id spécifié"
+    else:
+        return render_template('list_bouteilles.html')
+
 
 @app.route('/vin', methods=['GET', 'POST'])
 @login_required
@@ -76,13 +99,13 @@ def cave():
 @app.route('/etagere/<string:nom_etagere>', methods=['GET', 'POST'])
 def etagere_details(nom_etagere):
     # Créez une instance de la classe Etagere
-    etagere = Etagere(nom_etagere)
+    etagere = Etagere(nom_etagere, id_user=current_user.id)
 
     # Récupérez les bouteilles de l'étagère
     bouteilles = etagere.liste_bouteilles()
 
     # Passez les bouteilles au template
-    return render_template('list_bouteilles.html', bouteilles=bouteilles)
+    return render_template('list_bouteilles.html', bouteilles=bouteilles, nom_etagere=nom_etagere)
 
 @app.route('/list_vin')
 def list_vin():
@@ -102,8 +125,8 @@ def ajouter_etagere_route():
         nb_bouteille = 0
         nb_bouteille_dispo = request.form.get('nb_bouteille_dispo')
 
-        etagere = Etagere(nom_etagere)
-        etagere.ajouter_etagere(id_user, id_cave, nb_bouteille, nb_bouteille_dispo)
+        etagere = Etagere(nom_etagere, id_user)
+        etagere.ajouter_etagere(id_cave, nb_bouteille, nb_bouteille_dispo)
 
         return "Etagere ajoutée"
     else:
@@ -114,7 +137,7 @@ def ajouter_etagere_route():
 def supprimer_etagere():
     if request.method == 'POST':
         nom_etagere = request.form.get('nom_etagere')
-        etagere = Etagere(nom_etagere)
+        etagere = Etagere(nom_etagere, id_user=current_user.id)
         result = etagere.supprimer_etagere()
 
         if result:
@@ -145,6 +168,17 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+@app.route('/create_user', methods=['GET', 'POST'])
+def create_user():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User(username, password)
+        user.ajouter_user()
+        return redirect(url_for('login'))
+    else:
+        return render_template('create_user.html')
+
 @app.route('/ajouter_bouteille', methods=['GET', 'POST'])
 @login_required
 def ajouter_bouteille():
@@ -154,9 +188,10 @@ def ajouter_bouteille():
         name = request.form.get('nom_bouteille')
         note_perso = request.form.get('note_perso')
         qt_totale = int(request.form.get('qt_totale'))
+        id_user = current_user.id
 
         # Créez une instance de la classe Bouteille
-        bouteille = Bouteille(nom_etagere, name, note_perso, qt_totale)
+        bouteille = Bouteille(id_user, nom_etagere, name, note_perso, qt_totale)
 
         # Récupérez les autres données du formulaire
         name = request.form.get('nom_vin')
@@ -173,7 +208,6 @@ def ajouter_bouteille():
 
         # Vérifiez le résultat de l'ajout de la bouteille
         if result:
-            # Redirigez vers la page de confirmation
             return "Bouteille ajoutée"
         else:
             return "L'étagère n'a pas suffisamment de place pour les nouvelles bouteilles"

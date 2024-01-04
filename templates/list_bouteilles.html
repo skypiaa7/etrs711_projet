@@ -19,18 +19,54 @@
     <h1>Liste des bouteilles</h1>
     <table>
         <tr>
-            <th>Nom de la bouteille</th>
-            <th>Quantite</th>
-            <th>Emplacement</th>
-            <th>Commentaire</th>
+            <th>id_bouteille</th>
+            <th>id_vin</th>
+            <th>id_etagere</th>
+            <th>nom bouteille</th>
+            <th>note perso</th>
+            <th>quantité</th>
+            <th>id_vin</th>
+            <th>nom_vin</th>
+            <th>domaine</th>
+            <th>type</th>
+            <th>année</th>
+            <th>region</th>
+            <th>commentaire</th>
+            <th>prix</th>
+            <th>note_commu</th>
+            <th>note_perso</th>
+            
         </tr>
         {% for bouteille in bouteilles %}
             <tr>
+                <td>{{ bouteille[0] }}</td>  <!-- Remplacez 0 par l'index de l'id de la bouteille dans le tuple -->
+                <td>{{ bouteille[1] }}</td>  <!-- Remplacez 1 par l'index du nom de l'étagère dans le tuple -->
+                <td>{{ bouteille[2] }}</td>  <!-- Remplacez 2 par l'index du nom du vin dans le tuple -->
                 <td>{{ bouteille[3] }}</td>  <!-- Remplacez 3 par l'index du nom de la bouteille dans le tuple -->
                 <td>{{ bouteille[4] }}</td>  <!-- Remplacez 4 par l'index de la quantité dans le tuple -->
                 <td>{{ bouteille[5] }}</td>  <!-- Remplacez 5 par l'index de l'emplacement dans le tuple -->
                 <td>{{ bouteille[6] }}</td>  <!-- Remplacez 6 par l'index du commentaire dans le tuple -->
+                <td>{{ bouteille[7] }}</td>  <!-- Remplacez 7 par l'index du prix dans le tuple -->
+                <td>{{ bouteille[8] }}</td>  <!-- Remplacez 8 par l'index de la note communauté dans le tuple -->
+                <td>{{ bouteille[9] }}</td>  <!-- Remplacez 9 par l'index de la note personnelle dans le tuple -->
+                <td>{{ bouteille[10] }}</td>  <!-- Remplacez 10 par l'index de l'année dans le tuple -->
+                <td>{{ bouteille[11] }}</td>  <!-- Remplacez 11 par l'index du type dans le tuple -->
+                <td>{{ bouteille[12] }}</td>  <!-- Remplacez 12 par l'index du domaine dans le tuple -->
+                <td>{{ bouteille[13] }}</td>  <!-- Remplacez 13 par l'index de la région dans le tuple -->
+                <td>{{ bouteille[14] }}</td>  <!-- Remplacez 14 par l'index de l'id du vin dans le tuple -->
+                <td>{{ bouteille[15] }}</td>  <!-- Remplacez 15 par l'index de l'id de l'étagère dans le tuple -->
+                <td>
+                    <form action="/delete_bouteille" method="post">
+                        <input type="number" name="qt_suppr" min="1" required>
+                        <input type="hidden" name="id_bouteille" value="{{ bouteille[0] }}">
+                        <input type="hidden" name="id_etagere" value="{{ bouteille[2] }}">
+                        <input type="hidden" name="nom_etagere" value="{{ nom_etagere }}">
+                        <input type="hidden" name="qt_totale" value="{{ bouteille[5] }}">
+                        <input type="submit" value="Supprimer">
+                    </form>
+                </td>
             </tr>
+
         {% endfor %}
     </table>
 </body>
