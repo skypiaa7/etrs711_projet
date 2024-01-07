@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Supprimer une bouteille</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<nav>
+    <div id="navigation">
+        <a href="">Accueil</a>
+        <a href="{{ url_for('cave') }}">Mes Bouteille</a>
+        <a href="{{ url_for('vin') }}">Modèle de Vin</a>
+        <a href="{{ url_for('login') }}">S'authentifier</a>
+        <a href="{{ url_for('logout') }}">logout</a>
+    </div>
+</nav>
+<body>
+    <h1>Ajouter le vin dans une étagère</h1>
+    <form action=/ajouter_bouteille_from_vin method="POST">
+        <label for="name">Nom de la bouteille :</label>
+        <input type="text" id="nom_bouteille" name="nom_bouteille" required>
+        <label for="nom_etagere">Nom de l'étagère :</label>
+        <input type="text" id="nom_etagere" name="nom_etagere" required>
+        <label for="qt_totale">Nombre de bouteilles disponibles :</label>
+        <input type="number" id="qt_totale" name="qt_totale">
+        <label for="note_perso">Note personnel :</label>
+        <input type="number" id="note_perso" name="note_perso">
+        <button type="submit">Ajouter l'étagère</button>
+</html>
+

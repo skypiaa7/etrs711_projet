@@ -112,9 +112,6 @@ class Etagere:
             print("Etagère et toutes les bouteilles associées supprimées avec succès.")
             return True
 
-# nvetagere = Etagere("test", 15)
-# nvetagere.ajouter_etagere(1, 0, 15)
-# nvetagere.liste_bouteilles()
-# nvetagere.supprimer_etagere()
+
 
 

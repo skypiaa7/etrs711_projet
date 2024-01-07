@@ -26,7 +26,6 @@
                 <th>Commentaire</th>
                 <th>Prix</th>
                 <th>Note communauté</th>
-                <th>Note personnelle</th>
             </tr>
         </thead>
         <tbody>
@@ -40,9 +39,9 @@
                     <td>{{ vin[6] }}</td>
                     <td>{{ vin[7] }}</td>
                     <td>{{ vin[8] }}</td>
-                    <td>{{ vin[9] }}</td>
                     <td>
-                        <a href="{{ url_for('ajouter_', id_vin=vin[0], name=vin[1], domaine=vin[2], type=vin[3], annee=vin[4], region=vin[5], commentaire=vin[6], prix=vin[7], note_commu=vin[8], note_perso=vin[9]) }}">
+                        <a href="{{ url_for('ajouter_bouteille_by_vin', id_vin=vin[0], nom_vin=vin[1], domaine=vin[2], type=vin[3], annee=vin[4], region=vin[5], 
+                        commentaire=vin[6], prix=vin[7], note_commu=vin[8]) }}">
                             <button>Ajouter à la cave</button>
                         </a>
                     </td>

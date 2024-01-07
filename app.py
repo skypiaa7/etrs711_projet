@@ -6,6 +6,8 @@ from models.etagere import Etagere
 from flask import Flask, render_template, redirect, url_for, request
 import sqlite3
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
+from flask import session
+
 
 
 app = Flask(__name__, template_folder='templates')
@@ -19,7 +21,7 @@ def load_user(user_id):
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-vin_instance = Vin(None, None, None, None, None, None, None, None, None)
+vin_instance = Vin(None, None, None, None, None, None, None, None)
 print("le programme commence")
 
 @app.route('/')
@@ -50,7 +52,7 @@ def delete_bouteille():
         return render_template('list_bouteilles.html')
 
 
-@app.route('/vin', methods=['GET', 'POST'])
+@app.route('/ajouter_vin', methods=['GET', 'POST'])
 @login_required
 def vin():
     if request.method == 'POST':
@@ -63,7 +65,6 @@ def vin():
         commentaire = request.form['commentaire']
         prix = request.form['prix']
         note_commu = request.form['note_commu']
-        note_perso = request.form['note_perso']
 
         # Mettez à jour les valeurs de l'instance Vin avec les données du formulaire
         vin_instance.name = name
@@ -74,7 +75,6 @@ def vin():
         vin_instance.commentaire = commentaire
         vin_instance.prix = prix
         vin_instance.note_commu = note_commu
-        vin_instance.note_perso = note_perso
 
         # Ajoutez le vin en utilisant la méthode ajouter_vin de la classe Vin
         vin_instance.ajouter_vin()
@@ -204,7 +204,7 @@ def ajouter_bouteille():
         note_commu = request.form.get('note_commu')
 
         # Ajoutez la bouteille en utilisant la méthode ajouter_bouteille de la classe Bouteille
-        result = bouteille.ajouter_bouteille(name, domaine, type, annee, region, commentaire, prix, note_commu, note_perso)
+        result = bouteille.ajouter_bouteille(name, domaine, type, annee, region, commentaire, prix, note_commu)
 
         # Vérifiez le résultat de l'ajout de la bouteille
         if result:
@@ -216,7 +216,57 @@ def ajouter_bouteille():
         return render_template('ajouter_bouteille.html')
 
 @app.route('/ajouter_bouteille_from_vin', methods=['GET', 'POST'])
+@login_required        
+def ajouter_bouteille_by_vin():
+        if request.method == 'GET':
+        
+            session['id_vin'] = request.args.get('id_vin')
+            session['nom_vin'] = request.args.get('nom_vin')
+            session['domaine'] = request.args.get('domaine')
+            session['type'] = request.args.get('type')
+            session['annee'] = request.args.get('annee')
+            session['region'] = request.args.get('region')
+            session['commentaire'] = request.args.get('commentaire')
+            session['prix'] = request.args.get('prix')
+            session['note_commu'] = request.args.get('note_commu')
 
+        if request.method == 'POST':
+            # Récupérez les données du formulaire
+            nom_etagere = request.form.get('nom_etagere')
+            name = request.form.get('nom_bouteille')
+            note_perso = request.form.get('note_perso')
+            qt_totale = int(request.form.get('qt_totale'))
+            id_user = current_user.id
+
+            print (name)
+
+            # Récupérez les données de la session
+            id_vin = session.get('id_vin')
+            nom_vin = session.get('nom_vin')
+            domaine = session.get('domaine')
+            type = session.get('type')
+            annee = session.get('annee')
+            region = session.get('region')
+            commentaire = session.get('commentaire')
+            prix = session.get('prix')
+            note_commu = session.get('note_commu')
+
+            # Créez une instance de la classe Bouteille
+            bouteille = Bouteille(id_user, nom_etagere, name, note_perso ,qt_totale)
+
+            # Ajoutez la bouteille en utilisant la méthode ajouter_bouteille de la classe Bouteille
+            result = bouteille.ajouter_bouteille(nom_vin, domaine, type, annee, region, commentaire, prix, note_commu)
+
+            # Vérifiez le résultat de l'ajout de la bouteille
+            if result == True:
+                return "Bouteille ajoutée"
+            elif result == False:
+                return "Erreur : Aucune etagere trouvée avec le nom spécifié"
+            else:
+                return "L'étagère n'a pas suffisamment de place pour les nouvelles bouteilles"
+            
+        else: 
+            return render_template('ajouter_bouteille_from_vin.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

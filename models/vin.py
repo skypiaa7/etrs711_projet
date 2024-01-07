@@ -1,7 +1,7 @@
 import sqlite3
 
 class Vin:
-    def __init__(self, name, domaine, type, annee, region, commentaire, prix, note_commu, note_perso):
+    def __init__(self, name, domaine, type, annee, region, commentaire, prix, note_commu):
         self.name = name
         self.domaine = domaine
         self.type = type
@@ -10,7 +10,6 @@ class Vin:
         self.commentaire = commentaire
         self.prix = prix
         self.note_commu = note_commu
-        self.note_perso = note_perso
 
     def ajouter_vin(self):
         # Établir une connexion à la base de données (assurez-vous d'avoir créé la table Bouteille)
@@ -24,18 +23,21 @@ class Vin:
 
         if existing_vin:
             print("Le modèle de vin existe déjà.")
+            print(existing_vin[0])
             connection.close()
         else:
             # Insérer un nouveau modèle de bouteille
-            cursor.execute("INSERT INTO Vin (name, domaine, type, annee, region, commentaire, prix, note_commu, note_perso)"
-                            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            cursor.execute("INSERT INTO Vin (name, domaine, type, annee, region, commentaire, prix, note_commu)"
+                            " VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                             (self.name, self.domaine, self.type, self.annee, self.region, self.commentaire,
-                            self.prix, self.note_commu, self.note_perso))
+                            self.prix, self.note_commu))
 
             # Committer les changements et fermer la connexion
             connection.commit()
             connection.close()
             print("Modèle de bouteille ajouté avec succès.")
+    
+        
 
     @staticmethod
     def list_vin():
@@ -48,10 +50,3 @@ class Vin:
         result = cursor.execute(query).fetchall()
         connection.close()
         return result
-
-
-resultat = Vin.list_vin()
-
-# Afficher les résultats
-for vin in resultat:
-    print(vin)
