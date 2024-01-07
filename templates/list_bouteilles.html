@@ -9,10 +9,10 @@
 <nav>
     <div id="navigation">
         <a href="">Accueil</a>
-        <a href="{{ url_for('cave') }}">Mes Bouteille</a>
+        <a href="{{ url_for('cave') }}">Ma Cave</a>
         <a href="{{ url_for('vin') }}">Modèle de Vin</a>
-        <a href="{{ url_for('login') }}">S'authentifier</a>
-        <a href="{{ url_for('logout') }}">logout</a>
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
     </div>
 </nav>
 <body>
@@ -44,7 +44,7 @@
                 <td>{{ bouteille[12] }}</td>  <!-- Remplacez 12 par l'index du domaine dans le tuple -->
                 <td>{{ bouteille[13] }}</td>  <!-- Remplacez 13 par l'index de la région dans le tuple -->
                 <td>{{ bouteille[14] }}</td>  <!-- Remplacez 14 par l'index de l'id du vin dans le tuple -->
-                <td>{{ bouteille[15] }}</td>  <!-- Remplacez 15 par l'index de l'id de l'étagère dans le tuple -->
+                <td>{{ bouteille[4] }}</td>  <!-- Remplacez 15 par l'index de l'id de l'étagère dans le tuple -->
                 <td>
                     <form action="/delete_bouteille" method="post">
                         <input type="number" name="qt_suppr" min="1" required>

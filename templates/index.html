@@ -8,13 +8,15 @@
 </head>
 
 <body>
-    <div id="navigation">
-        <a href="">Accueil</a>
-        <a href="{{ url_for('cave') }}">Mes Bouteille</a>
-        <a href="{{ url_for('vin') }}">Modèle de Vin</a>
-        <a href="{{ url_for('login') }}">S'authentifier</a>
-        <a href="{{ url_for('logout') }}">logout</a>
-    </div>
+    <nav>
+        <div id="navigation">
+            <a href="">Accueil</a>
+            <a href="{{ url_for('cave') }}">Ma Cave</a>
+            <a href="{{ url_for('vin') }}">Modèle de Vin</a>
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
     <h1>Gestionnaire de Cave à Vin test</h1>
 </body>
 </html>

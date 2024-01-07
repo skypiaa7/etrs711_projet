@@ -122,4 +122,14 @@ class Bouteille:
                 return None
     
 
+#test fonction ajouter_bouteille
+instance = Bouteille(5, "test", "test", 1, 1)
+result = instance.ajouter_bouteille("test45", "test", "test", 1, "test", "test", 1, 1)
 
+if result:
+    print("Bouteille ajoutée avec succès.")
+else:
+    print("Erreur lors de l'ajout de la bouteille.")
+
+
+            

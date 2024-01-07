@@ -190,6 +190,13 @@ def ajouter_bouteille():
         qt_totale = int(request.form.get('qt_totale'))
         id_user = current_user.id
 
+        print(nom_etagere)
+        print(name)
+        print(note_perso)
+        print(qt_totale)
+        print(id_user)
+
+
         # Créez une instance de la classe Bouteille
         bouteille = Bouteille(id_user, nom_etagere, name, note_perso, qt_totale)
 
@@ -202,6 +209,7 @@ def ajouter_bouteille():
         commentaire = request.form.get('commentaire')
         prix = request.form.get('prix')
         note_commu = request.form.get('note_commu')
+
 
         # Ajoutez la bouteille en utilisant la méthode ajouter_bouteille de la classe Bouteille
         result = bouteille.ajouter_bouteille(name, domaine, type, annee, region, commentaire, prix, note_commu)
@@ -237,8 +245,6 @@ def ajouter_bouteille_by_vin():
             note_perso = request.form.get('note_perso')
             qt_totale = int(request.form.get('qt_totale'))
             id_user = current_user.id
-
-            print (name)
 
             # Récupérez les données de la session
             id_vin = session.get('id_vin')
