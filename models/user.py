@@ -56,6 +56,8 @@ class User:
         connection = sqlite3.connect('bouteille.db')
         cursor = connection.cursor()
 
+        
+
         query = '''
             INSERT INTO User (name, password) VALUES (?, ?);
         '''

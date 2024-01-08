@@ -16,24 +16,27 @@
     </div>
 </nav>
 <body>
-
-    <h1>Ma Cave</h1>
-    <a href="/ajouter_bouteille">
-        <button>ajouter une bouteille</button>
-    </a>
-    <a href="/supprimer_etagere">
-        <button>supprimer une étagère</button>
-    </a>
-    <a href="/ajouter_etagere">
-        <button>Ajouter une étagère</button>
-    </a>
-{% for etagere in Etagere %}
-    <div>
-        <a href="{{ url_for('etagere_details', nom_etagere=etagere[4]) }}">
-            <button>{{ etagere[4] }}</button>
+    
+    <div style="padding: 15px;">
+            <h1>Ma Cave</h1>
+        <a href="/ajouter_bouteille">
+            <button>ajouter une bouteille</button>
         </a>
-        <p style="display: inline-block; margin-left: 10px;">Nombre de places disponibles : {{ etagere[3] }}</p>
+        <a href="/supprimer_etagere">
+            <button>supprimer une étagère</button>
+        </a>
+        <a href="/ajouter_etagere">
+            <button>Ajouter une étagère</button>
+        </a>
+    {% for etagere in Etagere %}
+        <div>
+            <a href="{{ url_for('etagere_details', nom_etagere=etagere[4]) }}">
+                <button>{{ etagere[4] }}</button>
+            </a>
+            <p style="display: inline-block; margin-left: 10px;">Nombre de places disponibles : {{ etagere[3] }}</p>
+        </div>
+    {% endfor %}
     </div>
-{% endfor %}
+
 </body>
 </html>
